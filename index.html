@@ -16,13 +16,16 @@
 </head>
 <body>
 
-<fieldset class="fieldset bg-base-200 border-base-300 rounded-box w-xs border p-4  mx-auto">
-  <legend class="fieldset-legend flex justify-center mx-auto pt-16 text-3xl font-bold text-blue-700">Login</legend>
-
-  <label class="label">Username</label>
+<fieldset class="fieldset bg-base-200 border-base-300 rounded-box w-xs border p-4 mt-10  mx-auto">
+    <div class="mx-auto space-y-5">
+        <img class="mx-auto" src="./assets/github-logo.png">
+  <legend class="fieldset-legend flex justify-center mx-auto text-3xl font-bold whitespace-nowrap">GitHub Issues Tracker</legend>
+  <p class="mx-auto flex justify-center text-sm text-gray-500">Sing in to manage Your Issues</p>
+</div>
+  <label class="label text-sm">Username</label>
   <input id="get-input" type="email" class="input" placeholder="Enter Your Username" required/>
 
-  <label class="label">Password</label>
+  <label class="label text-sm">Password</label>
   <input id="get-password" type="password" class="input" placeholder="Password" required />
 
   <button id="login-btn" class="btn btn-primary mt-4">Login</button>

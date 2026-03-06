@@ -15,6 +15,39 @@
   crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
-    
+    <section class="flex justify-between w-9/12 mx-auto pt-4">
+        <div>
+            <h2 class="text-3xl font-bold ">All Issues</h2>
+        </div>
+        <div>
+            <div class="join">
+  <div>
+    <label class="input validator join-item">
+      <input type="email" placeholder="Search Issues" required />
+    </label>
+  </div>
+  <button class="btn btn-primary join-item">Search</button>
+</div>
+        </div>
+    </section>
+<section class="flex space-x-5 w-9/12 mx-auto pt-4 ">
+   <button id="all-btn" onclick="togglestyle('all-btn')" class="btn btn-outline btn-primary bg-blue-800 text-white hover:text-white">All</button>
+   <button id="open-btn"  onclick="togglestyle('open-btn')" class="btn btn-outline btn-primary bg-blue-800 text-white hover:text-white">Open</button>
+   <button id="closed-btn"  onclick="togglestyle('closed-btn')" class="btn btn-outline btn-primary bg-blue-800 text-white hover:text-white">Closed</button>
+</section>
+<section class="flex justify-between w-9/12 mx-auto pt-4 border border-gray-300 p-10 rounded-md align-center mt-10">
+    <div class="flex pt-6">
+        <div class="pt-2"><img src="./assets/Aperture.png" width="40rem"></div>
+        <div>
+            <h3 class="pl-4 font-bold text-2xl">50 Issues</h3>
+            <p class="pl-4 text-gray-500">Track and manage your project issues</p>
+        </div>
+    </div>
+    <div class="flex gap-5 pt-8">
+         <p class=" flex p-2"><img src="./assets/Open-Status.png">Open</p>
+        <p class=" flex p-2"><img src="./assets/Closed- Status .png">Closed</p>
+    </div>
+</section> 
+<script src="./home.js"></script>
 </body>
 </html>
