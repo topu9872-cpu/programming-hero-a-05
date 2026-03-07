@@ -7,6 +7,8 @@ let openSection= [];
 let closeSection= [];
 
 let searchBtn=document.getElementById('searchBtn');
+let searchInput=document.getElementById('searchInput');
+
 // btn toggle
 
 let allBtn=   document.getElementById('all-btn');
@@ -39,13 +41,13 @@ spans();
 
 togglestyle('all-btn');
 
+
+
 const allApiSection = ()=>{
    fetch("https://phi-lab-server.vercel.app/api/v1/lab/issues")
 .then((res)=>res.json())
 .then((data)=>allCardsSection(data.data));
 };
-
-
 
 const allCardsSection =(cards)=>{
 
@@ -57,7 +59,7 @@ if(item.priority === "low"){
 };
 
 
-    totalCardsCount.innerText=Number(allCards.children.length)+ " "+ "Issues"
+    totalCardsCount.innerText=Number(allCards.children.length)+ " Issues";
     let card =document.createElement('div');
 
     card.innerHTML=`
@@ -86,7 +88,6 @@ if(item.priority === "low"){
 
     allCards.append(card);
 });
-
 };
 allApiSection();
 
@@ -123,4 +124,64 @@ allApiSection();
 // };
 // 
 // });
+
+searchBtn.addEventListener('click',()=>{
+    let searchInputValue=searchInput.value.trim().toLowerCase();
+     
+    fetch(`https://phi-lab-server.vercel.app/api/v1/lab/issues/search?q=${searchInputValue}`)
+    .then(res=>res.json())
+    .then(data=>{
+        let items =data.data;
+        let filterItems=items.filter(item=>item.title.toLowerCase().includes(searchInputValue));
+        allCards.innerHTML="";
+        filterItems.forEach(item=>{
+            let borderColor = "border-t-green-400"; 
+if(item.priority === "low"){
+    borderColor = "border-t-purple-400";
+};
+
+
+
+
+    
+    let card =document.createElement('div');
+
+
+    card.innerHTML=`
+     <div id="colorClass" class=" space-y-3 border-t-4 p-8 pb-20 bg-white ${borderColor} rounded-2xl">
+     <p class="priority flex justify-end">${item.priority}</p>
+     <h2 class="title text-3xl font-semibold">${item.title}</h2>
+     <p class= "description text-gray-500">${item.description}</p>
+     <div class="flex gap-5">
+         <p class="lebels1 bg-yellow-500 rounded-lg text-nowrap">${item.labels[0] || "did not found labels"}</p>
+         <p class="lebels2 bg-yellow-500 rounded-lg text-nowrap">${item.labels[1] || "did not found labels"}</p>
+          </div>
+         
+         <div class=" flex gap-5 justify-between border-t border-t-gray-400 pt-6">
+              <div class="space-y-3">
+             <p class="author text-gray-500">${item.author}</p>
+             <p class="createAt text-gray-500">${item.createdAt}</p>
+              </div>
+             <div class="space-y-3">
+               <p class="assignee text-gray-500">${item.assignee}</p>
+               <p class="updateAt text-gray-500">${item.updatedAt}</p>  
+             </div>
+     </div>
+ </div>
+    `;
+
+
+
+
+    allCards.append(card);
+});
+totalCardsCount.innerText=Number(allCards.children.length)+ " Issues";
+});
+        });
+    
+
+
+
+
+
 
