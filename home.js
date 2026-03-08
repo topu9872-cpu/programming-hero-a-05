@@ -4,6 +4,8 @@ let totalCardsCount =document.getElementById('totalCards');
 let allCardContainer =document.getElementById('allCardContainer');
 let allCards =document.getElementById('allCardSection');
 let span = document.getElementById('span');
+let openCardSection = document.getElementById('openCardSection');
+let closeCardSection = document.getElementById('closeCardSection');
 
 let openSection= [];
 let closeSection= [];
@@ -25,6 +27,7 @@ openBtn.classList.remove('bg-blue-800' ,'text-white');
 closeBtn.classList.remove('bg-blue-800' ,'text-white');
 
 
+
 allBtn.classList.add('btn-outline' ,'text-blue-800');
 openBtn.classList.add('btn-outline' ,'text-blue-800')
 closeBtn.classList.add('btn-outline' ,'text-blue-800');
@@ -32,7 +35,83 @@ closeBtn.classList.add('btn-outline' ,'text-blue-800');
 
 let selected= document.getElementById(id);
 selected.classList.add('bg-blue-800', 'text-white');
+
+
+ if(id == 'open-btn'){
+   allCards.classList.add('hidden');
+   closeCardSection.classList.add('hidden');
+   openCardSection.classList.remove('hidden');
+renderSection();
+ } else if(id == 'all-btn'){
+   allCards.classList.remove('hidden');
+  openCardSection.classList.add('hidden'); 
+  openCardSection.classList.add('hidden');
+
+ } else if(id == 'closed-btn'){
+     openCardSection.classList.add('hidden');
+   allCards.classList.add('hidden');
+ closeCardSection.classList.remove('hidden');
+renderSection();
+}
+
+
 };
+
+
+// render section
+
+const renderSection = ()=>{
+   fetch("https://phi-lab-server.vercel.app/api/v1/lab/issues")
+.then(res=>res.json())
+.then(data=>desplaycards(data.data));
+};
+
+const desplaycards=(data)=>{
+
+openCardSection.innerHTML = "";
+closeCardSection.innerHTML = "";
+
+    data.forEach(item=>{
+
+ let borderColor = "border-t-green-400";
+ if (item.priority === "low") {
+   borderColor = "border-t-purple-400";
+ }
+
+        let card=document.createElement('div');
+        card.innerHTML=`
+ <div onclick="showModal(${item.id})" id="colorClass" class=" space-y-3 border-t-4 p-8 pb-20 bg-white ${borderColor} rounded-2xl">
+ <p class="priority flex justify-end">${item.priority}</p>
+ <h2 class="title text-3xl font-semibold">${item.title}</h2>
+ <p class= "description text-gray-500">${item.description}</p>
+ <div class="flex gap-5">
+     <p class="lebels1 bg-yellow-500 rounded-lg text-nowrap">${item.labels[0] || "did not found labels"}</p>
+     <p class="lebels2 bg-yellow-500 rounded-lg text-nowrap">${item.labels[1] || "did not found labels"}</p>
+      </div>
+    
+     <div class=" flex gap-5 justify-between border-t border-t-gray-400 pt-6">
+          <div class="space-y-3">
+         <p class="author text-gray-500">${item.author}</p>
+         <p class="createAt text-gray-500">${item.createdAt}</p>
+          </div>
+         <div class="space-y-3">
+           <p class="assignee text-gray-500">${item.assignee}</p>
+           <p class="updateAt text-gray-500">${item.updatedAt}</p>  
+         </div>
+ </div>
+   `;
+
+
+if(item.priority=== 'low'){
+    closeCardSection.append(card);
+}else if(item.priority==='high'|| 'medium') {
+   openCardSection.append(card);
+   
+}
+    });
+    
+};
+
 
 // span section
 
@@ -47,7 +126,7 @@ spans();
 
 togglestyle('all-btn');
 
-// card section
+// allcard section
 
 const allApiSection = ()=>{
    fetch("https://phi-lab-server.vercel.app/api/v1/lab/issues")
@@ -58,13 +137,12 @@ const allApiSection = ()=>{
 const allCardsSection =(cards)=>{
 
 cards.forEach(item => {
+ let borderColor = "border-t-green-400";
+ if (item.priority === "low") {
+   borderColor = "border-t-purple-400";
+ }
 
-let borderColor = "border-t-green-400"; 
-if(item.priority === "low"){
-    borderColor = "border-t-purple-400";
-};
-
-
+ 
     totalCardsCount.innerText=Number(allCards.children.length)+ " Issues";
     let card =document.createElement('div');
  
@@ -90,6 +168,7 @@ if(item.priority === "low"){
      </div>
  </div>
     `;
+
 
 
     allCards.append(card);
@@ -154,42 +233,6 @@ const modal =(data)=>{
 
 
 
-
-
-allCardContainer.addEventListener('click', function(event){
-if(event.target.classList.contains('openBtn')){
-    let parentNode=event.target.parentNode.parentNode;
-    let priority=parentNode.querySelector('.priority').innerText;
-    let title=parentNode.querySelector('.title').innerText;
-    let description=parentNode.querySelector('.description').innerText;
-    let lebels1=parentNode.querySelector('.lebels1').innerText;
-    let lebels2=parentNode.querySelector('.lebels2').innerText;
-    let author=parentNode.querySelector('.author').innerText;
-    let createAt=parentNode.querySelector('.createAt').innerText;
-    let assignee=parentNode.querySelector('.assignee').innerText;
-    let updateAt=parentNode.querySelector('.updateAt').innerText;
-    
-
-    let cardInfo={
-
-priority,
-title,
-description,
-lebels1,
-lebels2,
-author,
-createAt,
-assignee,
-updateAt
-    };
-   let exist =openSection.find(item=> item.priority ===cardInfo.priority);
-   if(!exist){
-    openSection.push(cardInfo);
-   }
-};
-
- });
-
 // search section
 
 searchBtn.addEventListener('click',()=>{
@@ -202,14 +245,12 @@ searchBtn.addEventListener('click',()=>{
         let filterItems=items.filter(item=>item.title.toLowerCase().includes(searchInputValue));
         allCards.innerHTML="";
         filterItems.forEach(item=>{
-            let borderColor = "border-t-green-400"; 
-if(item.priority === "low"){
-    borderColor = "border-t-purple-400";
-};
 
 
-
-
+ let borderColor = "border-t-green-400";
+ if (item.priority === "low") {
+   borderColor = "border-t-purple-400";
+ }
     
     let card =document.createElement('div');
 
@@ -243,9 +284,3 @@ totalCardsCount.innerText=Number(allCards.children.length)+ " Issues";
 });
         });
     
-
-
-
-
-
-
