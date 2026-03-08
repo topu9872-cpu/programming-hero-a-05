@@ -1,3 +1,5 @@
+// variable names
+
 let totalCardsCount =document.getElementById('totalCards');
 let allCardContainer =document.getElementById('allCardContainer');
 let allCards =document.getElementById('allCardSection');
@@ -8,6 +10,8 @@ let closeSection= [];
 
 let searchBtn=document.getElementById('searchBtn');
 let searchInput=document.getElementById('searchInput');
+// ----------------------------------------------------
+
 
 // btn toggle
 
@@ -30,6 +34,8 @@ let selected= document.getElementById(id);
 selected.classList.add('bg-blue-800', 'text-white');
 };
 
+// span section
+
 const spans=()=>{
     if(allCards.children.length===0){
     span.classList.add('hidden'); 
@@ -41,7 +47,7 @@ spans();
 
 togglestyle('all-btn');
 
-
+// card section
 
 const allApiSection = ()=>{
    fetch("https://phi-lab-server.vercel.app/api/v1/lab/issues")
@@ -91,21 +97,9 @@ if(item.priority === "low"){
 };
 allApiSection();
 
-//  "status": "success",
-//   "message": "Issue fetched successfully",
-//   "data": {
-    // "id": 33,
-    // "title": "Add bulk operations support",
-    // "description": "Allow users to perform bulk actions like delete, update status on multiple items at once.",
-    // "status": "open",
-    // "labels": [
-    //   "enhancement"
-    // ],
-    // "priority": "low",
-    // "author": "bulk_barry",
-    // "assignee": "",
-    // "createdAt": "2024-02-02T10:00:00Z",
-    // "updatedAt": "2024-02-02T10:00:00Z"
+
+
+// modal section
 
 const showModal = async (id)=>{
 const url =`https://phi-lab-server.vercel.app/api/v1/lab/issue/${id}`;
@@ -162,39 +156,41 @@ const modal =(data)=>{
 
 
 
-// allCardContainer.addEventListener('click', function(event){
-// if(event.target.classList.contains('openBtn')){
-    // let parentNode=event.target.parentNode.parentNode;
-    // let priority=parentNode.querySelector('.priority').innerText;
-    // let title=parentNode.querySelector('.title').innerText;
-    // let description=parentNode.querySelector('.description').innerText;
-    // let lebels1=parentNode.querySelector('.lebels1').innerText;
-    // let lebels2=parentNode.querySelector('.lebels2').innerText;
-    // let author=parentNode.querySelector('.author').innerText;
-    // let createAt=parentNode.querySelector('.createAt').innerText;
-    // let assignee=parentNode.querySelector('.assignee').innerText;
-    // let updateAt=parentNode.querySelector('.updateAt').innerText;
-    // 
-// 
-    // let cardInfo={
-// 
-// priority,
-// title,
-// description,
-// lebels1,
-// lebels2,
-// author,
-// createAt,
-// assignee,
-// updateAt
-    // };
-//    let exist =openSection.find(item=> item.priority ===cardInfo.priority);
-//    if(!exist){
-    // openSection.push(cardInfo);
-//    }
-// };
-// 
-// });
+allCardContainer.addEventListener('click', function(event){
+if(event.target.classList.contains('openBtn')){
+    let parentNode=event.target.parentNode.parentNode;
+    let priority=parentNode.querySelector('.priority').innerText;
+    let title=parentNode.querySelector('.title').innerText;
+    let description=parentNode.querySelector('.description').innerText;
+    let lebels1=parentNode.querySelector('.lebels1').innerText;
+    let lebels2=parentNode.querySelector('.lebels2').innerText;
+    let author=parentNode.querySelector('.author').innerText;
+    let createAt=parentNode.querySelector('.createAt').innerText;
+    let assignee=parentNode.querySelector('.assignee').innerText;
+    let updateAt=parentNode.querySelector('.updateAt').innerText;
+    
+
+    let cardInfo={
+
+priority,
+title,
+description,
+lebels1,
+lebels2,
+author,
+createAt,
+assignee,
+updateAt
+    };
+   let exist =openSection.find(item=> item.priority ===cardInfo.priority);
+   if(!exist){
+    openSection.push(cardInfo);
+   }
+};
+
+ });
+
+// search section
 
 searchBtn.addEventListener('click',()=>{
     let searchInputValue=searchInput.value.trim().toLowerCase();
