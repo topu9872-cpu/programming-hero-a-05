@@ -14,8 +14,8 @@
  integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
   crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
-<body class="sm:max-sm:[576px] sm:grid col-span-1">
-    <section class="flex justify-between w-9/12 mx-auto pt-4">
+<body class=" grid col-span-1 w-full">
+    <section class="flex justify-between w-11/12 mx-auto pt-4">
         <div class="flex space-x-2">
             <img class="w-8" src="./assets/github-logo.png">
             <h2 class="text-3xl font-bold ">All Issues</h2>
@@ -31,12 +31,12 @@
 </div>
         </div>
     </section>
-<section class="flex space-x-5 w-9/12 mx-auto pt-4 ">
+<section class="flex space-x-5 w-11/12 mx-auto pt-4 ">
    <button id="all-btn" onclick="togglestyle('all-btn')" class="btn btn-outline btn-primary bg-blue-800 text-white hover:text-white">All</button>
    <button id="open-btn"  onclick="togglestyle('open-btn')" class="btn btn-outline btn-primary bg-blue-800 text-white hover:text-white">Open</button>
    <button id="closed-btn"  onclick="togglestyle('closed-btn')" class="btn btn-outline btn-primary bg-blue-800 text-white hover:text-white">Closed</button>
 </section>
-<section class="flex justify-between w-9/12 mx-auto pt-4 border border-gray-300 p-10 rounded-md align-center mt-10">
+<section class="flex justify-between w-11/12 mx-auto pt-4 border border-gray-300 p-10 rounded-md align-center mt-10">
     <div class="flex pt-6">
         <div class="pt-2"><img src="./assets/Aperture.png" width="40rem"></div>
         <div>
@@ -54,10 +54,10 @@
    <span class="loading loading-infinity loading-xl"></span>
 </section>
 
-<section id="allCardSection" class=" grid grid-cols-1 md:grid-cols-3 justify-between w-9/12 gap-5 mx-auto pt-4 bg-gray-100 pb-20">
+<section id="allCardSection" class=" grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 justify-between w-11/12 gap-5 mx-auto pt-4 bg-gray-100 pb-20">
 </section>
-<section id="openCardSection" class=" grid grid-cols-1 md:grid-cols-3 justify-between w-9/12 gap-5 mx-auto pt-4 bg-gray-100 pb-20"></section>
-<section id="closeCardSection" class=" grid grid-cols-1 md:grid-cols-3 justify-between w-9/12 gap-5 mx-auto pt-4 bg-gray-100 pb-20"></section>
+<section id="openCardSection" class=" grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 justify-between w-11/12 gap-5 mx-auto pt-4 bg-gray-100 pb-20"></section>
+<section id="closeCardSection" class=" grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 justify-between w-11/12 gap-5 mx-auto pt-4 bg-gray-100 pb-20"></section>
 
  
  <div id="modalContainer"></div>

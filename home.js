@@ -7,8 +7,6 @@ let span = document.getElementById('span');
 let openCardSection = document.getElementById('openCardSection');
 let closeCardSection = document.getElementById('closeCardSection');
 
-let openSection= [];
-let closeSection= [];
 
 let searchBtn=document.getElementById('searchBtn');
 let searchInput=document.getElementById('searchInput');
@@ -45,15 +43,14 @@ renderSection();
  } else if(id == 'all-btn'){
    allCards.classList.remove('hidden');
   openCardSection.classList.add('hidden'); 
-  openCardSection.classList.add('hidden');
+  closeCardSection.classList.add('hidden');
 
  } else if(id == 'closed-btn'){
      openCardSection.classList.add('hidden');
    allCards.classList.add('hidden');
  closeCardSection.classList.remove('hidden');
 renderSection();
-}
-
+};
 
 };
 
@@ -76,7 +73,7 @@ closeCardSection.innerHTML = "";
  let borderColor = "border-t-green-400";
  if (item.priority === "low") {
    borderColor = "border-t-purple-400";
- }
+ };
 
         let card=document.createElement('div');
         card.innerHTML=`
@@ -109,7 +106,7 @@ if(item.priority=== 'low'){
    
 }
     });
-    
+  
 };
 
 
@@ -143,7 +140,7 @@ cards.forEach(item => {
  }
 
  
-    totalCardsCount.innerText=Number(allCards.children.length)+ " Issues";
+    
     let card =document.createElement('div');
  
     card.innerHTML=`
@@ -173,6 +170,7 @@ cards.forEach(item => {
 
     allCards.append(card);
 });
+totalCardsCount.innerText=Number(allCards.children.length)+ " Issues";
 };
 allApiSection();
 
