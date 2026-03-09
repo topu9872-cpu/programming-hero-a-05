@@ -1,284 +1,273 @@
-// variable names
-
-let totalCardsCount =document.getElementById('totalCards');
-let allCardContainer =document.getElementById('allCardContainer');
-let allCards =document.getElementById('allCardSection');
-let span = document.getElementById('span');
-let openCardSection = document.getElementById('openCardSection');
-let closeCardSection = document.getElementById('closeCardSection');
 
 
-let searchBtn=document.getElementById('searchBtn');
-let searchInput=document.getElementById('searchInput');
+let totalCardsCount = document.getElementById("totalCards");
+let allCards = document.getElementById("allCardSection");
+let span = document.getElementById("span");
+let openCardSection = document.getElementById("openCardSection");
+let closeCardSection = document.getElementById("closeCardSection");
+
+let searchBtn = document.getElementById("searchBtn");
+let searchInput = document.getElementById("searchInput");
+
+let allBtn = document.getElementById("all-btn");
+let openBtn = document.getElementById("open-btn");
+let closeBtn = document.getElementById("closed-btn");
+
+let modalContainer = document.getElementById("modalContainer");
+
+// store API data
+let issues = [];
 
 
+const fetchIssues = async () => {
+  const res = await fetch("https://phi-lab-server.vercel.app/api/v1/lab/issues");
+  const data = await res.json();
 
-// btn toggle
+  issues = data.data;
 
-let allBtn=   document.getElementById('all-btn');
-let openBtn=   document.getElementById('open-btn');
- let closeBtn=  document.getElementById('closed-btn');
-// ----------------------------------------------------
-function togglestyle(id){
-allBtn.classList.remove('bg-blue-800' ,'text-white');
-openBtn.classList.remove('bg-blue-800' ,'text-white');
-closeBtn.classList.remove('bg-blue-800' ,'text-white');
+  renderAllCards(issues);
+  renderOpenClosed(issues);
 
-allBtn.classList.add('btn-outline' ,'text-blue-800');
-openBtn.classList.add('btn-outline' ,'text-blue-800')
-closeBtn.classList.add('btn-outline' ,'text-blue-800');
-
-
-let selected= document.getElementById(id);
-selected.classList.add('bg-blue-800', 'text-white');
-
-
- if(id == 'open-btn'){
-   allCards.classList.add('hidden');
-   closeCardSection.classList.add('hidden');
-   openCardSection.classList.remove('hidden');
-renderSection();
- } else if(id == 'all-btn'){
-   allCards.classList.remove('hidden');
-  openCardSection.classList.add('hidden'); 
-  closeCardSection.classList.add('hidden');
-
- } else if(id == 'closed-btn'){
-     openCardSection.classList.add('hidden');
-   allCards.classList.add('hidden');
- closeCardSection.classList.remove('hidden');
-renderSection();
+  totalCardsCount.innerText = issues.length + " Issues";
 };
 
-};
+fetchIssues();
 
 
-// render section
+function togglestyle(id) {
 
-const renderSection = ()=>{
-   fetch("https://phi-lab-server.vercel.app/api/v1/lab/issues")
-.then(res=>res.json())
-.then(data=>desplaycards(data.data));
-};
+  allBtn.classList.remove("bg-blue-800", "text-white");
+  openBtn.classList.remove("bg-blue-800", "text-white");
+  closeBtn.classList.remove("bg-blue-800", "text-white");
 
-const desplaycards=(data)=>{
+  let selected = document.getElementById(id);
+  selected.classList.add("bg-blue-800", "text-white");
 
-openCardSection.innerHTML = "";
-closeCardSection.innerHTML = "";
+  if (id === "all-btn") {
 
-    data.forEach(item=>{
+    allCards.classList.remove("hidden");
+    openCardSection.classList.add("hidden");
+    closeCardSection.classList.add("hidden");
 
- let borderColor = "border-t-green-400";
- if (item.priority === "low") {
-   borderColor = "border-t-purple-400";
- };
+    totalCardsCount.innerText = issues.length + " Issues";
 
-        let card=document.createElement('div');
-        card.innerHTML=`
- <div onclick="showModal(${item.id})" id="colorClass" class=" space-y-3 border-t-4 p-8 pb-20 bg-white ${borderColor} rounded-2xl">
- <p class="priority flex justify-end">${item.priority}</p>
- <h2 class="title text-3xl font-semibold">${item.title}</h2>
- <p class= "description text-gray-500">${item.description}</p>
- <div class="flex gap-5">
-     <p class="lebels1 bg-yellow-500 rounded-lg text-nowrap">${item.labels[0] || "did not found labels"}</p>
-     <p class="lebels2 bg-yellow-500 rounded-lg text-nowrap">${item.labels[1] || "did not found labels"}</p>
-      </div>
-    
-     <div class=" flex gap-5 justify-between border-t border-t-gray-400 pt-6">
-          <div class="space-y-3">
-         <p class="author text-gray-500">${item.author}</p>
-         <p class="createAt text-gray-500">${item.createdAt}</p>
-          </div>
-         <div class="space-y-3">
-           <p class="assignee text-gray-500">${item.assignee}</p>
-           <p class="updateAt text-gray-500">${item.updatedAt}</p>  
-         </div>
- </div>
-   `;
+  } 
+  else if (id === "open-btn") {
 
+    allCards.classList.add("hidden");
+    openCardSection.classList.remove("hidden");
+    closeCardSection.classList.add("hidden");
 
-if(item.priority=== 'low'){
-    closeCardSection.append(card);
-}else{
-   openCardSection.append(card);
-   
+    const openIssues = issues.filter(
+      item => item.status.toLowerCase() === "open"
+    );
+
+    totalCardsCount.innerText = openIssues.length + " Issues";
+
+  } 
+  else if (id === "closed-btn") {
+
+    allCards.classList.add("hidden");
+    openCardSection.classList.add("hidden");
+    closeCardSection.classList.remove("hidden");
+
+    const closedIssues = issues.filter(
+      item => item.status.toLowerCase() === "closed"
+    );
+
+    totalCardsCount.innerText = closedIssues.length + " Issues";
+  }
 }
-   
-    });
-  
-};
 
-
-// span section
-
-const spans=()=>{
-    if(allCards.children.length===0){
-    span.classList.add('hidden'); 
-}else{
-    span.classList.remove('hidden'); 
-   }
-};
-spans();
-
-togglestyle('all-btn');
-
-// allcard section
-
-const allApiSection = ()=>{
-   fetch("https://phi-lab-server.vercel.app/api/v1/lab/issues")
-.then((res)=>res.json())
-.then((data)=>allCardsSection(data.data));
-};
-
-const allCardsSection =(cards)=>{
-
-cards.forEach(item => {
- let borderColor = "border-t-green-400";
- if (item.priority === "low") {
-   borderColor = "border-t-purple-400";
- }
-
- 
-    
-    let card =document.createElement('div');
- 
-    card.innerHTML=`
-     <div onclick="showModal(${item.id})" id="colorClass" class=" space-y-3 border-t-4 p-8 pb-20 bg-white ${borderColor} rounded-2xl">
-     <p class="priority flex justify-end">${item.priority}</p>
-     <h2 class="title text-3xl font-semibold">${item.title}</h2>
-     <p class= "description text-gray-500">${item.description}</p>
-     <div class="flex gap-5">
-         <p class="lebels1 bg-yellow-500 rounded-lg text-nowrap">${item.labels[0] || "did not found labels"}</p>
-         <p class="lebels2 bg-yellow-500 rounded-lg text-nowrap">${item.labels[1] || "did not found labels"}</p>
-          </div>
-         
-         <div class=" flex gap-5 justify-between border-t border-t-gray-400 pt-6">
-              <div class="space-y-3">
-             <p class="author text-gray-500">${item.author}</p>
-             <p class="createAt text-gray-500">${item.createdAt}</p>
-              </div>
-             <div class="space-y-3">
-               <p class="assignee text-gray-500">${item.assignee}</p>
-               <p class="updateAt text-gray-500">${item.updatedAt}</p>  
-             </div>
-     </div>
- </div>
-    `;
+togglestyle("all-btn");
 
 
 
-    allCards.append(card);
-});
-totalCardsCount.innerText=Number(allCards.children.length)+ " Issues";
+const createCard = (item) => {
 
-};
-allApiSection();
+  let borderColor = "border-t-green-400";
 
+  if (item.priority === "low") {
+    borderColor = "border-t-purple-400";
+  }
 
+  let card = document.createElement("div");
 
-// modal section
+  card.innerHTML = `
+  <div onclick="showModal(${item.id})"
+  class="space-y-3 border-t-4 p-8 pb-20 bg-white ${borderColor} rounded-2xl">
 
-const showModal = async (id)=>{
-const url =`https://phi-lab-server.vercel.app/api/v1/lab/issue/${id}`;
-let res= await fetch(url);
-   let details= await res.json();
-   modal(details.data);
-   
-};
-const modal =(data)=>{
-    console.log(data)
-   let detailsContainer = document.getElementById('modalContainer');
-   
- detailsContainer.innerHTML=`
- <dialog onclick="showModal(${item.id})" id="my_modal_5" class="modal modal-bottom sm:modal-middle">
-  <div class="modal-box">
-  
-    <div class="modal-action">
-      <form method="dialog">
-     <div id="colorClass" class=" space-y-3 p-8  bg-white rounded-2xl">
-   
-     <h2 class="title text-3xl font-semibold">${data.title}</h2>
-     
-     <div class="flex gap-5">
-         <p class="lebels1 bg-yellow-500 rounded-lg text-nowrap">${data.labels[0]}</p>
-         <p class="lebels2 bg-yellow-500 rounded-lg text-nowrap">${data.labels[1]}</p>
-          </div>
-        <p class= "description text-gray-500">${data.description}</p>
-        <div class="flex justify-between">
-              <div class="space-y-3">
-             <p class="author text-gray-500">assignee:</p>
-             <p class="createAt">${data.assignee || 'not found'}</p>
-              </div>
-             <div class="space-y-3">
-               <p class="assignee text-gray-500">priority:</p>
-               <p class="updateAt text-gray-500">${data.priority}</p>  
-             </div>
-             </div>
-     </div>
-     <div class="flex justify-end">
-        <button class="btn btn-outline btn-primary">Close</button>
-        </div>
-         </div>
-      </form>
-    </div>
+  <p class="priority flex justify-end">${item.priority}</p>
+
+  <h2 class="title text-3xl font-semibold">${item.title}</h2>
+
+  <p class="description text-gray-500">${item.description}</p>
+
+  <div class="flex gap-5">
+      <p class="lebels1 bg-yellow-500 rounded-lg text-nowrap">
+      ${item.labels[0] || "No label"}
+      </p>
+
+      <p class="lebels2 bg-yellow-500 rounded-lg text-nowrap">
+      ${item.labels[1] || "No label"}
+      </p>
   </div>
-</dialog>
- 
- `;
- document.getElementById('my_modal_5').showModal();
+
+  <div class="flex gap-5 justify-between border-t border-t-gray-400 pt-6">
+
+      <div class="space-y-3">
+        <p class="author text-gray-500">${item.author}</p>
+        <p class="createAt text-gray-500">${item.createdAt}</p>
+      </div>
+
+      <div class="space-y-3">
+        <p class="assignee text-gray-500">${item.assignee}</p>
+        <p class="updateAt text-gray-500">${item.updatedAt}</p>
+      </div>
+
+  </div>
+
+  </div>
+  `;
+
+  return card;
+};
+
+
+// ================= RENDER ALL =================
+
+const renderAllCards = (cards) => {
+
+  allCards.innerHTML = "";
+
+  cards.forEach(item => {
+
+    const card = createCard(item);
+
+    allCards.append(card);
+
+  });
 
 };
 
 
+const renderOpenClosed = (data) => {
 
-// search section
+  openCardSection.innerHTML = "";
+  closeCardSection.innerHTML = "";
 
-searchBtn.addEventListener('click',()=>{
-    let searchInputValue=searchInput.value.trim().toLowerCase();
-     
-    fetch(`https://phi-lab-server.vercel.app/api/v1/lab/issues/search?q=${searchInputValue}`)
-    .then(res=>res.json())
-    .then(data=>{
-        let items =data.data;
-        let filterItems=items.filter(item=>item.title.toLowerCase().includes(searchInputValue));
-        allCards.innerHTML="";
-        filterItems.forEach(item=>{
+  const openIssues = data.filter(
+    item => item.status.toLowerCase() === "open"
+  );
+
+  const closedIssues = data.filter(
+    item => item.status.toLowerCase() === "closed"
+  );
+
+  openIssues.forEach(item => {
+
+    const card = createCard(item);
+
+    openCardSection.append(card);
+
+  });
+
+  closedIssues.forEach(item => {
+
+    const card = createCard(item);
+
+    closeCardSection.append(card);
+
+  });
+
+};
 
 
- let borderColor = "border-t-green-400";
- if (item.priority === "low") {
-   borderColor = "border-t-purple-400";
- }
-    
-    let card =document.createElement('div');
+// ================= MODAL =================
+
+const showModal = async (id) => {
+
+  const res = await fetch(
+    `https://phi-lab-server.vercel.app/api/v1/lab/issue/${id}`
+  );
+
+  const details = await res.json();
+
+  const data = details.data;
+
+  modal(data);
+};
+
+const modal = (data) => {
+
+  modalContainer.innerHTML = `
+  
+<dialog id="my_modal_5" class="modal modal-bottom sm:modal-middle">
+
+<div class="modal-box">
+
+<div class="space-y-4">
+
+<h2 class="text-2xl font-bold">${data.title}</h2>
+
+<div class="flex gap-4">
+
+<p class="bg-yellow-500 rounded p-1">
+${data.labels[0] || "No label"}
+</p>
+
+<p class="bg-yellow-500 rounded p-1">
+${data.labels[1] || "No label"}
+</p>
+
+</div>
+
+<p class="text-gray-500">${data.description}</p>
+
+<div class="flex justify-between">
+
+<div>
+<p class="text-gray-500">Assignee</p>
+<p>${data.assignee || "Not assigned"}</p>
+</div>
+
+<div>
+<p class="text-gray-500">Priority</p>
+<p>${data.priority}</p>
+</div>
+
+</div>
+
+</div>
+
+<div class="flex justify-end mt-6">
+
+<form method="dialog">
+<button class="btn btn-primary">Close</button>
+</form>
+
+</div>
+
+</div>
+
+</dialog>
+`;
+
+  document.getElementById("my_modal_5").showModal();
+
+};
 
 
-    card.innerHTML=`
-     <div onclick="showModal(${item.id})" id="colorClass" class=" space-y-3 border-t-4 p-8 pb-20 bg-white ${borderColor} rounded-2xl">
-     <p class="priority flex justify-end">${item.priority}</p>
-     <h2 class="title text-3xl font-semibold">${item.title}</h2>
-     <p class= "description text-gray-500">${item.description}</p>
-     <div class="flex gap-5">
-         <p class="lebels1 bg-yellow-500 rounded-lg text-nowrap">${item.labels[0] || "did not found labels"}</p>
-         <p class="lebels2 bg-yellow-500 rounded-lg text-nowrap">${item.labels[1] || "did not found labels"}</p>
-          </div>
-         
-         <div class=" flex gap-5 justify-between border-t border-t-gray-400 pt-6">
-              <div class="space-y-3">
-             <p class="author text-gray-500">${item.author}</p>
-             <p class="createAt text-gray-500">${item.createdAt}</p>
-              </div>
-             <div class="space-y-3">
-               <p class="assignee text-gray-500">${item.assignee}</p>
-               <p class="updateAt text-gray-500">${item.updatedAt}</p>  
-             </div>
-     </div>
- </div>
-    `;
+searchBtn.addEventListener("click", () => {
 
-    allCards.append(card);
+  const value = searchInput.value.toLowerCase().trim();
+
+  const filtered = issues.filter(issue =>
+    issue.title.toLowerCase().includes(value)
+  );
+
+  renderAllCards(filtered);
+
+  totalCardsCount.innerText = filtered.length + " Issues";
+
 });
-totalCardsCount.innerText=Number(allCards.children.length)+ " Issues";
-});
-        });
-    
