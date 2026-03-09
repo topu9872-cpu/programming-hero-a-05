@@ -63,7 +63,7 @@ function togglestyle(id) {
     );
 
     totalCardsCount.innerText = openIssues.length + " Issues";
-
+console.log(openIssues);
   } 
   else if (id === "closed-btn") {
 
@@ -83,13 +83,40 @@ togglestyle("all-btn");
 
 
 
-const createCard = (item) => {
+// span section
 
-  let borderColor = "border-t-green-400";
+const spans=()=>{
+    if(allCards.children.length===0){
+    span.classList.add('hidden'); 
+}else{
+    span.classList.remove('hidden'); 
+   }
+};
+spans();
 
-  if (item.priority === "low") {
-    borderColor = "border-t-purple-400";
-  }
+//  "id": 2,
+      // "title": "Add dark mode support",
+      // "description": "Users are requesting a dark mode option. This would improve accessibility and user experience.",
+      // "status": "open",
+      // "labels": [
+        // "enhancement",
+        // "good first issue"
+      // ],
+      // "priority": "medium",
+      // "author": "sarah_dev",
+      // "assignee": "",
+      // "createdAt": "2024-01-14T14:20:00Z",
+      // "updatedAt": "2024-01-16T09:15:00Z"
+
+    const createCard = (item) => {
+
+  let borderColor = "border-t-purple-400";
+
+  if (item.status === "open") {
+    borderColor = "border-t-green-400";
+  }else if (item.status === "mudium") {
+   borderColor = "border-t-green-400";
+ }
 
   let card = document.createElement("div");
 
@@ -157,12 +184,13 @@ const renderOpenClosed = (data) => {
   closeCardSection.innerHTML = "";
 
   const openIssues = data.filter(
-    item => item.status.toLowerCase() === "open"
-  );
+    item => item.status.toLowerCase() === "open" 
+   );
 
-  const closedIssues = data.filter(
-    item => item.status.toLowerCase() === "closed"
-  );
+
+   const closedIssues = data.filter(
+  item => item.status.toLowerCase() === "closed"
+   );
 
   openIssues.forEach(item => {
 
@@ -271,3 +299,4 @@ searchBtn.addEventListener("click", () => {
   totalCardsCount.innerText = filtered.length + " Issues";
 
 });
+
