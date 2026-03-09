@@ -10,7 +10,7 @@ let closeCardSection = document.getElementById('closeCardSection');
 
 let searchBtn=document.getElementById('searchBtn');
 let searchInput=document.getElementById('searchInput');
-// ----------------------------------------------------
+
 
 
 // btn toggle
@@ -18,13 +18,11 @@ let searchInput=document.getElementById('searchInput');
 let allBtn=   document.getElementById('all-btn');
 let openBtn=   document.getElementById('open-btn');
  let closeBtn=  document.getElementById('closed-btn');
-
+// ----------------------------------------------------
 function togglestyle(id){
 allBtn.classList.remove('bg-blue-800' ,'text-white');
 openBtn.classList.remove('bg-blue-800' ,'text-white');
 closeBtn.classList.remove('bg-blue-800' ,'text-white');
-
-
 
 allBtn.classList.add('btn-outline' ,'text-blue-800');
 openBtn.classList.add('btn-outline' ,'text-blue-800')
@@ -101,10 +99,11 @@ closeCardSection.innerHTML = "";
 
 if(item.priority=== 'low'){
     closeCardSection.append(card);
-}else if(item.priority==='high'|| 'medium') {
+}else{
    openCardSection.append(card);
    
 }
+   
     });
   
 };
@@ -171,6 +170,7 @@ cards.forEach(item => {
     allCards.append(card);
 });
 totalCardsCount.innerText=Number(allCards.children.length)+ " Issues";
+
 };
 allApiSection();
 
@@ -190,7 +190,7 @@ const modal =(data)=>{
    let detailsContainer = document.getElementById('modalContainer');
    
  detailsContainer.innerHTML=`
- <dialog id="my_modal_5" class="modal modal-bottom sm:modal-middle">
+ <dialog onclick="showModal(${item.id})" id="my_modal_5" class="modal modal-bottom sm:modal-middle">
   <div class="modal-box">
   
     <div class="modal-action">
@@ -207,7 +207,7 @@ const modal =(data)=>{
         <div class="flex justify-between">
               <div class="space-y-3">
              <p class="author text-gray-500">assignee:</p>
-             <p class="createAt">${data.assignee || 'not find'}</p>
+             <p class="createAt">${data.assignee || 'not found'}</p>
               </div>
              <div class="space-y-3">
                <p class="assignee text-gray-500">priority:</p>
@@ -254,7 +254,7 @@ searchBtn.addEventListener('click',()=>{
 
 
     card.innerHTML=`
-     <div id="colorClass" class=" space-y-3 border-t-4 p-8 pb-20 bg-white ${borderColor} rounded-2xl">
+     <div onclick="showModal(${item.id})" id="colorClass" class=" space-y-3 border-t-4 p-8 pb-20 bg-white ${borderColor} rounded-2xl">
      <p class="priority flex justify-end">${item.priority}</p>
      <h2 class="title text-3xl font-semibold">${item.title}</h2>
      <p class= "description text-gray-500">${item.description}</p>
